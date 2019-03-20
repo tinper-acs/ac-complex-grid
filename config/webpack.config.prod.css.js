@@ -2,23 +2,20 @@
 
 
 const path = require('path')
-const webpack = require('webpack')
 const webpackMerge = require('webpack-merge')
-const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const baseConfig = require('./webpack.base')
 module.exports = webpackMerge(baseConfig, {
   mode: 'production',
   entry: {
-    app: path.join(__dirname, '../src/index.js')
+    app: path.join(__dirname, '../src/Grid.scss')
   },
   externals: ['react', 'react-dom', 'prop-types', 'tinper-bee'],
   output: {
     filename: 'index.js',
-    path: path.join(__dirname, '../dist'),
+    path: path.join(__dirname, '../build'),
     publicPath: '/',
     libraryTarget: 'commonjs2'
   },
@@ -64,9 +61,6 @@ module.exports = webpackMerge(baseConfig, {
     ]
   },
   optimization: {
-    // runtimeChunk: {
-    //   name: 'manifest'
-    // },
     minimizer: [
       new UglifyJsPlugin({
         cache: true,
@@ -74,47 +68,11 @@ module.exports = webpackMerge(baseConfig, {
         sourceMap: true
       }),
       new OptimizeCSSAssetsPlugin({})  // use OptimizeCSSAssetsPlugin
-    ], // [new UglifyJsPlugin({...})]
-    // splitChunks:{
-    //   // chunks: 'async',
-    //   // minSize: 30000,
-    //   // minChunks: 1,
-    //   // maxAsyncRequests: 5,
-    //   // maxInitialRequests: 3,
-    //   // name: false,
-    //   cacheGroups: {
-    //     // vendor: {
-    //     //   name: 'vendor',
-    //     //   chunks: 'initial',
-    //     //   priority: -10,
-    //     //   reuseExistingChunk: false,
-    //     //   test: /node_modules\/(.*)\.js/
-    //     // },
-    //     styles: {
-    //       name: 'styles',
-    //       test: /\.(sa|sc|c)ss$/,
-    //       chunks: 'all',
-    //       enforce: true
-    //     }
-    //   }
-    // }
+    ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    // new HtmlWebPackPlugin({
-    //   template: "./src/index.html",
-    //   filename: "./index.html"
-    // }),
     new MiniCssExtractPlugin({
-      filename: 'index.css',
-    }),
-    new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      logLevel: 'error'
+      filename: 'Grid.css',
     })
   ]
 })
