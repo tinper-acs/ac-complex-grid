@@ -76,7 +76,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
 	
-	var Demo1 = __webpack_require__(157);var Demo2 = __webpack_require__(564);var Demo3 = __webpack_require__(565);var Demo4 = __webpack_require__(566);var Demo5 = __webpack_require__(567);var DemoArray = [{ "example": _react2['default'].createElement(Demo1, null), "title": " 高级表格的基础应用示例1", "code": "/**\n * @title 高级表格的基础应用示例1\n * @description 全选、分页、过滤功能、交换\n *\n */\nimport React, { Component } from \"react\";\nimport { Grid } from 'tinper-bee';\n\nfunction fmoney(s, n) {\n  n = n > 0 && n <= 20 ? n : 2;\n  s = parseFloat((s + \"\").replace(/[^\\d\\.-]/g, \"\")).toFixed(n) + \"\";\n  let l = s.split(\".\")[0].split(\"\").reverse(), r = s.split(\".\")[1];\n  let t = \"\";\n  for (let i = 0; i < l.length; i++) {\n  t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? \",\" : \"\");\n  }\n  return t.split(\"\").reverse().join(\"\") + \".\" + r;\n  }\n  \nconst column = [\n  {\n    title: \"序号\",\n    dataIndex: \"index\",\n    key: \"index\",\n    width: 100\n  },\n  {\n    title: \"订单编号\",\n    dataIndex: \"orderCode\",\n    key: \"orderCode\",\n    width: 150\n  },\n  {\n    title: \"金额\",\n    dataIndex: \"money\",\n    key: \"money\",\n    width: 160,\n    textAlign:'right',\n    sumCol: true,\n    render(text, record, index) {\n       let money = fmoney(text,2);\n       return (<span>{money}</span>)\n    }\n  },\n  {\n    title: \"类型\",\n    dataIndex: \"type_name\",\n    key: \"type_name\",\n    width: 100\n  },\n  {\n    title: \"采购组织\",\n    dataIndex: \"purchasing\",\n    key: \"purchasing\",\n    width: 150\n  },\n  {\n    title: \"采购组\",\n    dataIndex: \"purchasingGroup\",\n    key: \"purchasingGroup\",\n    width: 300\n  },\n  {\n    title: \"凭证日期\",\n    dataIndex: \"voucherDate\",\n    key: \"voucherDate\",\n    width: 150\n  },\n  {\n    title: \"审批状态\",\n    dataIndex: \"approvalState_name\",\n    key: \"approvalState_name\",\n    width: 150\n  },\n  {\n    title: \"确认状态\",\n    dataIndex: \"confirmState_name\",\n    key: \"confirmState_name\",\n    width: 500\n  },\n  {\n    title: \"关闭状态\",\n    dataIndex: \"closeState_name\",\n    key: \"closeState_name\",\n    width: 150\n  }\n];\nconst dataList = [\n  {\n    index: 1,\n    orderCode: \"2343\",\n    supplierName: \"xxx\",\n    type_name: \"123\",\n    purchasing: \"内行\",\n    purchasingGroup: \"323\",\n    voucherDate: \"kkkk\",\n    approvalState_name: \"vvvv\",\n    confirmState_name: \"aaaa\",\n    closeState_name: \"vnnnnn\",\n    money:'1232.56',\n    d: \"操作\",\n    key: \"1\"\n  },\n  {\n    index: 2,\n    _checked: true,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    money:'2341232.56',\n    d: \"2操作\",\n    key: \"2\"\n  },\n  {\n    index: 3,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    _disabled: true,\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    money:'122368732.56',\n    d: \"3操作\",\n    key: \"3\"\n  },\n  {\n    index: 4,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    money:'18765232.56',\n    d: \"4操作\",\n    key: \"4\"\n  }\n];\n\nclass Demo1 extends Component {\n  constructor(props) {\n    super(props);\n  }\n  //临时加个判断\n  shouldComponentUpdate(){\n    if(this.props.className =='u-panel-title'){\n      return false;\n    }\n  }\n  getSelectedDataFunc = data => {\n    console.log(\"data\", data);\n  };\n\n  selectedRow = (record, index) => {};\n  /**\n   * 请求页面数据\n   */\n  freshata=()=>{\n\n  }\n  onDataNumSelect=()=>{\n    console.log('选择每页多少条的回调函数');\n  }\n  render() {\n    let paginationObj = {\n      items:10,//一页显示多少条\n      total:100,//总共多少条、\n      freshData:this.freshData,//点击下一页刷新的数据\n      onDataNumSelect:this.onDataNumSelect, //每页大小改变触发的事件\n      showJump:false\n    }\n    return (\n      <Grid\n        className=\"demo\"\n        columns={column}\n        data={dataList}\n        getSelectedDataFunc={this.getSelectedDataFunc}\n        paginationObj={paginationObj}\n        canSum={true}\n      />\n    );\n  }\n}\n", "desc": " 全选、分页、过滤功能、交换" }, { "example": _react2['default'].createElement(Demo2, null), "title": " 高级表格(排序)应用示例2", "code": "/**\n *\n * @title 高级表格(排序)应用示例2\n * @description 基础grid上添加排序功能\n *\n */\nimport React, { Component } from \"react\";\nimport { Grid } from 'tinper-bee';\nconst column = [\n    {\n      title: \"名字\",\n      dataIndex: \"a\",\n      key: \"a\",\n      className:'dfasd',\n      width: 200\n    },\n    {\n      title: \"功力指数名称长时显示省略号\",\n      dataIndex: \"b\",\n      key: \"b\",\n      width: 200,\n      sumCol: true,\n      fixed:'left',\n      sorter: (a, b) => a.c - b.c,\n      sorterClick:(data,type)=>{//排序的回调函数\n        //type value is up or down\n        console.log(\"data\",data);\n      }\n    },\n    {\n      title: \"年龄\",\n      dataIndex: \"c\",\n      key: \"c\",\n      width: 200,\n      sumCol: true,\n      sorter: (a, b) => a.c - b.c,\n      sorterClick:(data,type)=>{//排序的回调函数\n        //type value is up or down\n        console.log(\"data\",data);\n      }\n    },\n    {\n      title: \"成绩\",\n      dataIndex: \"e\",\n      key: \"e\",\n      width: 200,\n      sumCol: true,\n      sorter: (a, b) => a.c - b.c,\n    },\n    {\n      title: \"武功级别\",\n      dataIndex: \"d\",\n      key: \"d\",\n      width: 200\n    }\n  ];\n  const dataList = [\n    { a: \"杨过\", b: 675, c: 30, d: \"内行\",e:100, key: \"2\" },\n    { a: \"令狐冲\", b: 43, c: 41, d: \"大侠\",e:90, key: \"1\" },\n    { a: \"令狐冲1\", b: 43, c: 81, d: \"大侠\", e:120,key: \"4\" },\n    { a: \"令狐冲2\", b: 43, c: 81, d: \"大侠\", e:130,key: \"5\" },\n    { a: \"郭靖\", b: 153, c: 25, d: \"大侠\",e:90, key: \"3\" }\n  ];\n\nclass Demo2 extends Component {\n  constructor(props) {\n    super(props);\n  }\n\n  //临时加个判断\n  shouldComponentUpdate(){\n    if(this.props.className =='u-panel-title'){\n      return false;\n    }\n  }\n  getSelectedDataFunc = data => {\n    console.log(\"data\", data);\n  };\n\n  getCloumnsScroll = columns => {\n    let sum = 0;\n    columns.forEach(da => {\n      sum += da.width;\n    });\n    console.log(\"sum\", sum);\n    return sum;\n  };\n\n  selectedRow = (record, index) => {};\n  /**\n   * 请求页面数据\n   */\n  freshData=()=>{\n\n  }\n  /**\n   * 后端获取数据\n   */\n  sortFun = (sortParam)=>{\n    console.info(sortParam);\n    //将参数传递给后端排序\n  }\n  render() {\n    let paginationObj = {\n      items:10,//总页数\n      freshData:this.freshData\n    }\n    let sortObj = {\n        mode:'multiple',\n        // backSource:true,\n        sortFun:this.sortFun\n      }\n    \n    return (\n      <div>\n        \n         <Grid\n          className=\"demo\"\n          columns={column}\n          data={dataList}\n          getSelectedDataFunc={this.getSelectedDataFunc}\n          selectedRow={this.selectedRow}\n          sort={sortObj}\n          sortFun={this.sortFun}\n          paginationObj={paginationObj}\n        />\n      </div>\n     \n    );\n  }\n}\n", "desc": " 基础grid上添加排序功能" }, { "example": _react2['default'].createElement(Demo3, null), "title": " 高级表格(保存操作模板、导出excel)应用示例3", "code": "/**\n  * @title 高级表格(保存操作模板、导出excel)应用示例3\n * @description 拖住表格宽度、交换列、以及导出excel功能\n *\n */\nimport React, { Component } from \"react\";\nimport { Button } from 'tinper-bee';\nimport Grid,{GridToolBar} from \"../../src\";\n\nconst column = [\n  {\n    title: \"序号\",\n    dataIndex: \"index\",\n    key: \"index\",\n    width: 100,\n    // exportHidden:true //是否在导出中隐藏此列,此属性如不设置的话，他会读取当前页面的列是否隐藏和显示\n  },\n  {\n    title: \"订单编号\",\n    dataIndex: \"orderCode\",\n    key: \"orderCode\",\n    exportKey:'supplierName',//单独设置当前列的导出的key\n    width: 130\n  },\n  {\n    title: \"供应商名称\",\n    dataIndex: \"supplierName\",\n    key: \"supplierName\",\n    width: 130\n  },\n  {\n    title: \"类型\",\n    dataIndex: \"type_name\",\n    key: \"type_name\",\n    width: 100\n  },\n  {\n    title: \"采购组织\",\n    dataIndex: \"purchasing\",\n    key: \"purchasing\",\n    width: 130,\n  },\n  {\n    title: \"采购组\",\n    dataIndex: \"purchasingGroup\",\n    key: \"purchasingGroup\",\n    width: 300\n  },\n  {\n    title: \"凭证日期\",\n    dataIndex: \"voucherDate\",\n    key: \"voucherDate\",\n    width: 130\n  },\n  {\n    title: \"审批状态\",\n    dataIndex: \"approvalState_name\",\n    key: \"approvalState_name\",\n    width: 130\n  },\n  {\n    title: \"确认状态\",\n    dataIndex: \"confirmState_name\",\n    key: \"confirmState_name\",\n    width: 500\n  },\n  {\n    title: \"关闭状态\",\n    dataIndex: \"closeState_name\",\n    key: \"closeState_name\",\n    width: 100\n  },\n  {\n    title: \"操作\",\n    dataIndex: \"d\",\n    key: \"d\",\n    width: 100,\n    fixed: \"right\",\n    render(text, record, index) {\n      return (\n        <div className=\"operation-btn\">\n          <a\n            href=\"#\"\n            tooltip={text}\n            onClick={() => {\n              alert(\"这是第\" + index + \"列，内容为:\" + text);\n            }}\n          >\n            一些操作\n          </a>\n        </div>\n      );\n    }\n  }\n];\nconst dataList = [\n  {\n    index: 1,\n    orderCode: \"2343\",\n    supplierName: \"xxx\",\n    type_name: \"123\",\n    purchasing: \"内行\",\n    purchasingGroup: \"323\",\n    voucherDate: \"kkkk\",\n    approvalState_name: \"vvvv\",\n    confirmState_name: \"aaaa\",\n    closeState_name: \"vnnnnn\",\n    d: \"操作\",\n    key: \"1\"\n  },\n  {\n    index: 2,\n    _checked: true,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    d: \"2操作\",\n    key: \"2\"\n  },\n  {\n    index: 3,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    _disabled: true,\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    d: \"3操作\",\n    key: \"3\"\n  },\n  {\n    index: 4,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    d: \"4操作\",\n    key: \"4\"\n  }\n];\n\nconst exportDataList = [\n  {\n    index: 1,\n    orderCode: \"2343\",\n    supplierName: \"xxx\",\n    type_name: \"123\",\n    purchasing: \"内行\",\n    purchasingGroup: \"323\",\n    voucherDate: \"kkkk\",\n    approvalState_name: \"vvvv\",\n    confirmState_name: \"aaaa\",\n    closeState_name: \"vnnnnn\",\n    d: \"操作\",\n    key: \"1\"\n  },\n  {\n    index: 4,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    d: \"4操作\",\n    key: \"4\"\n  }\n];\n\n\nclass Demo3 extends Component {\n  constructor(props) {\n    super(props);\n    this.state={\n      showTemTable:false\n    }\n  }\n  \n  getSelectedDataFunc = data => {\n    console.log(\"data\", data);\n  };\n\n  getCloumnsScroll = columns => {\n    let sum = 0;\n    columns.forEach(da => {\n      sum += da.width;\n    });\n    console.log(\"sum\", sum);\n    return sum;\n  };\n\n  selectedRow = (record, index) => {};\n  /**\n   * 请求页面数据\n   */\n  freshData=()=>{\n\n  }\n  createTemTable=()=>{\n    const colsAndTablePros = this.refs.grid.getColumnsAndTablePros();\n    this.setState({\n      showTemTable:true,\n      tablePros:colsAndTablePros.tablePros,\n      temColumns:colsAndTablePros.columns\n    });\n  }\n\n  exportExcel = ()=>{\n    this.refs.grid.exportExcel();\n  }\n\n  render() {\n    let paginationObj = {\n      items:10,//总页数\n      total:100,\n      freshData:this.freshData\n    }\n    const toolBtns = [{\n        value:'生成模板表格',\n        onClick:this.createTemTable,\n        bordered:false,\n        colors:'primary'\n    },{\n        value:'导出',\n        iconType:'uf-search',\n        onClick:this.exportExcel\n    }]\n    return (\n      <div>\n        <GridToolBar toolBtns={toolBtns}  />\n        <Grid\n          ref=\"grid\"\n          className='gridDemo demo'\n          columns={column}\n          data={dataList}\n          exportData={exportDataList}\n          getSelectedDataFunc={this.getSelectedDataFunc}\n          dragborder\n          multiSelect={{ type: \"checkbox\" }}\n          scroll={{ x: \"130%\" }}\n          selectedRow={this.selectedRow}\n          paginationObj={paginationObj}\n        />\n        <h3>根据模板生成的表格</h3>\n        {this.state.showTemTable?\n          <Grid {...this.state.tablePros} columns={this.state.temColumns}/>\n          :\"\"}\n      </div>\n    );\n  }\n}\n", "desc": " 拖住表格宽度、交换列、以及导出excel功能" }, { "example": _react2['default'].createElement(Demo4, null), "title": " 高级表格的基础应用示例4", "code": "/**\n * @title 高级表格的基础应用示例4\n * @description 全选、分页、过滤功能、交换\n *\n */\nimport React, { Component } from \"react\";\nimport { Grid } from 'tinper-bee';\nconst columns = [\n    {\n        title:'序号',\n        dataIndex:'index',\n        width:'80',\n        render:(text,record,index)=>{\n            return index\n        },\n        fixed:'left'\n    },\n    {\n    title: \"用户名\", dataIndex: \"a\", key: \"a\", width: 580, className: \"rowClassName\",\n  },\n  { id: \"123\", title: \"性别\", dataIndex: \"b\", key: \"b\", width: 80},\n  { title: \"年龄\", dataIndex: \"c\", key: \"c\", width: 200 },\n  {\n    title: \"操作\",\n    dataIndex: \"d\",\n    key: \"d\",\n    fixed:'right',\n    render(text, record, index) {\n      return (\n        <div style={{ position: 'relative' }} title={text} >\n          <a\n            href=\"javascript:;\"\n            tooltip={text}\n            onClick={() => {\n              alert('这是第' + index + '列，内容为:' + text);\n            }}\n          >\n            一些操作\n              </a>\n        </div>\n      );\n    }\n  }\n];\n\nconst data = [ ...new Array(10000) ].map((e, i) => {\n    const rs = { a: i + 'a', b: i + 'b', c: i + 'c', d: i + 'd', key: i };\n    if(i%3==0){\n        rs.b = '女';\n    }\n    return rs;\n   })\n\nclass Demo4 extends Component {\n  constructor(props) {\n    super(props);\n  }\n  //临时加个判断\n  shouldComponentUpdate(){\n    if(this.props.className =='u-panel-title'){\n      return false;\n    }\n  }\n  getSelectedDataFunc = data => {\n    console.log(\"data\", data);\n  };\n\n  selectedRow = (record, index) => {};\n  /**\n   * 请求页面数据\n   */\n  freshata=()=>{\n\n  }\n  onDataNumSelect=()=>{\n    console.log('选择每页多少条的回调函数');\n  }\n  render() {\n    let paginationObj = {\n      items:10,//一页显示多少条\n      total:100,//总共多少条\n      freshData:this.freshData,//点击下一页刷新的数据\n      onDataNumSelect:this.onDataNumSelect //每页大小改变触发的事件\n    }\n    return (\n      <Grid\n        className=\"demo\"\n        columns={columns}\n        data={data}\n        getSelectedDataFunc={this.getSelectedDataFunc}\n        paginationObj={paginationObj}\n        loadLazy={true}\n        heigth={40}\n        scroll = {{y:300}}\n      />\n    );\n  }\n}\n", "desc": " 全选、分页、过滤功能、交换" }, { "example": _react2['default'].createElement(Demo5, null), "title": " 含有ToolBar的复杂表格", "code": "/**\n * @title 含有ToolBar的复杂表格\n * @description 用户可以自定表格的toolBar，其中的button 请参考bee-button中属性配置\n *\n */\nimport React, { Component } from \"react\";\nimport {  } from 'tinper-bee';\nimport  Grid,{GridToolBar} from \"../../src\";\n\n  \nconst column = [\n  {\n    title: \"序号\",\n    dataIndex: \"index\",\n    key: \"index\",\n    width: 100\n  },\n  {\n    title: \"订单编号\",\n    dataIndex: \"orderCode\",\n    key: \"orderCode\",\n    width: 150\n  },\n  {\n    title: \"类型\",\n    dataIndex: \"type_name\",\n    key: \"type_name\",\n    width: 100\n  },\n  {\n    title: \"采购组织\",\n    dataIndex: \"purchasing\",\n    key: \"purchasing\",\n    width: 150\n  },\n  {\n    title: \"采购组\",\n    dataIndex: \"purchasingGroup\",\n    key: \"purchasingGroup\",\n    width: 300\n  },\n  {\n    title: \"凭证日期\",\n    dataIndex: \"voucherDate\",\n    key: \"voucherDate\",\n    width: 150\n  },\n  {\n    title: \"审批状态\",\n    dataIndex: \"approvalState_name\",\n    key: \"approvalState_name\",\n    width: 150\n  },\n  {\n    title: \"确认状态\",\n    dataIndex: \"confirmState_name\",\n    key: \"confirmState_name\",\n    width: 500\n  },\n  {\n    title: \"关闭状态\",\n    dataIndex: \"closeState_name\",\n    key: \"closeState_name\",\n    width: 150\n  }\n];\n\n\nclass Demo1 extends Component {\n  constructor(props) {\n    super(props);\n    this.state = {\n        dataList: [\n            {\n              index: 1,\n              orderCode: \"2343\",\n              supplierName: \"xxx\",\n              type_name: \"123\",\n              purchasing: \"内行\",\n              purchasingGroup: \"323\",\n              voucherDate: \"kkkk\",\n              approvalState_name: \"vvvv\",\n              confirmState_name: \"aaaa\",\n              closeState_name: \"vnnnnn\",\n              money:'1232.56',\n              key: \"1\"\n            },\n            {\n              index: 2,\n              _checked: true,\n              orderCode: \"222\",\n              supplierName: \"22xxx\",\n              type_name: \"1223\",\n              purchasing: \"内行2\",\n              purchasingGroup: \"3223\",\n              voucherDate: \"222kk\",\n              approvalState_name: \"22vvvv\",\n              confirmState_name: \"2aaaa\",\n              closeState_name: \"2vnnnnn\",\n              money:'2341232.56',\n              key: \"2\"\n            },\n            {\n              index: 3,\n              orderCode: \"222\",\n              supplierName: \"22xxx\",\n              _disabled: true,\n              type_name: \"1223\",\n              purchasing: \"内行2\",\n              purchasingGroup: \"3223\",\n              voucherDate: \"222kk\",\n              approvalState_name: \"22vvvv\",\n              confirmState_name: \"2aaaa\",\n              closeState_name: \"2vnnnnn\",\n              money:'122368732.56',\n              key: \"3\"\n            },\n            {\n              index: 4,\n              orderCode: \"222\",\n              supplierName: \"22xxx\",\n              type_name: \"1223\",\n              purchasing: \"内行2\",\n              purchasingGroup: \"3223\",\n              voucherDate: \"222kk\",\n              approvalState_name: \"22vvvv\",\n              confirmState_name: \"2aaaa\",\n              closeState_name: \"2vnnnnn\",\n              money:'18765232.56',\n              key: \"4\"\n            }\n          ]\n    }\n  }\n  //临时加个判断\n//   shouldComponentUpdate(){\n    // if(this.props.className =='u-panel-title'){\n    //   return false;\n    // }\n//   }\n  getSelectedDataFunc = data => {\n    console.log(\"data\", data);\n  };\n\n  selectedRow = (record, index) => {};\n  /**\n   * 请求页面数据\n   */\n  freshata=()=>{\n\n  }\n  onDataNumSelect=()=>{\n    console.log('选择每页多少条的回调函数');\n  }\n  addData = ()=>{\n      const dataList = this.state.dataList;\n      const currentIndex  = dataList.length + 1;\n      dataList.push({\n        index: currentIndex,\n        key: `${currentIndex}`\n      });\n      this.setState({\n          dataList\n      })\n     \n  }\n  \n      console.log('export=======');\n  }\n  /**\n   *批量修改操作\n   */\n  dispatchUpdate = ()=>{\n    console.log('--dispatch---update')\n  }\n  /**\n   *批量删除\n   */\n  dispatchDel = ()=>{\n    console.log('--dispatch---del')\n  }\n  render() {\n    let paginationObj = {\n      items:10,//一页显示多少条\n      total:100,//总共多少条、\n      freshData:this.freshData,//点击下一页刷新的数据\n      onDataNumSelect:this.onDataNumSelect, //每页大小改变触发的事件\n      showJump:false\n    }\n\n    const toolBtns = [{\n            value:'新增',\n            onClick:this.addData,\n            bordered:false,\n            colors:'primary'\n        },{\n            value:'导出',\n            iconType:'uf-search',\n            onClick:this.\n            value:'上传',\n            iconType:'uf-cloud-up',\n        },{\n            value:'批量操作',\n            onClick:this.dispatchOpt,\n            children:[\n                {\n                    value:'修改',  \n                    onClick:this.dispatchUpdate\n                },{\n                    value:'删除',  \n                    onClick:this.dispatchDel\n                }\n            ]\n        },{\n            iconType:'uf-copy',\n        }]\n    return (\n      <div>\n        <GridToolBar toolBtns={toolBtns} btnSize='sm' />\n        <Grid\n          className=\"demo\"\n          columns={column}\n          data={this.state.dataList}\n          getSelectedDataFunc={this.getSelectedDataFunc}\n          paginationObj={paginationObj}\n          canSum={true}\n        />\n      </div>\n      \n    );\n  }\n}\n", "desc": " 用户可以自定表格的toolBar，其中的button 请参考bee-button中属性配置" }];
+	var Demo1 = __webpack_require__(157);var Demo2 = __webpack_require__(564);var Demo4 = __webpack_require__(565);var Demo5 = __webpack_require__(566);var Demo6 = __webpack_require__(567);var DemoArray = [{ "example": _react2['default'].createElement(Demo1, null), "title": " 高级表格的基础应用(基本示例2)", "code": "/**\n * @title 高级表格的基础应用(基本示例2)\n * @description 全选、分页、过滤功能、交换\n *\n */\nimport React, { Component } from \"react\";\nimport { Grid } from 'tinper-bee';\n\nfunction fmoney(s, n) {\n  n = n > 0 && n <= 20 ? n : 2;\n  s = parseFloat((s + \"\").replace(/[^\\d\\.-]/g, \"\")).toFixed(n) + \"\";\n  let l = s.split(\".\")[0].split(\"\").reverse(), r = s.split(\".\")[1];\n  let t = \"\";\n  for (let i = 0; i < l.length; i++) {\n  t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? \",\" : \"\");\n  }\n  return t.split(\"\").reverse().join(\"\") + \".\" + r;\n  }\n  \nconst column = [\n  {\n    title: \"序号\",\n    dataIndex: \"index\",\n    key: \"index\",\n    width: 100\n  },\n  {\n    title: \"订单编号\",\n    dataIndex: \"orderCode\",\n    key: \"orderCode\",\n    width: 150\n  },\n  {\n    title: \"金额\",\n    dataIndex: \"money\",\n    key: \"money\",\n    width: 160,\n    textAlign:'right',\n    sumCol: true,\n    render(text, record, index) {\n       let money = fmoney(text,2);\n       return (<span>{money}</span>)\n    }\n  },\n  {\n    title: \"类型\",\n    dataIndex: \"type_name\",\n    key: \"type_name\",\n    width: 100\n  },\n  {\n    title: \"采购组织\",\n    dataIndex: \"purchasing\",\n    key: \"purchasing\",\n    width: 150\n  },\n  {\n    title: \"采购组\",\n    dataIndex: \"purchasingGroup\",\n    key: \"purchasingGroup\",\n    width: 300\n  },\n  {\n    title: \"凭证日期\",\n    dataIndex: \"voucherDate\",\n    key: \"voucherDate\",\n    width: 150\n  },\n  {\n    title: \"审批状态\",\n    dataIndex: \"approvalState_name\",\n    key: \"approvalState_name\",\n    width: 150\n  },\n  {\n    title: \"确认状态\",\n    dataIndex: \"confirmState_name\",\n    key: \"confirmState_name\",\n    width: 500\n  },\n  {\n    title: \"关闭状态\",\n    dataIndex: \"closeState_name\",\n    key: \"closeState_name\",\n    width: 150\n  }\n];\nconst dataList = [\n  {\n    index: 1,\n    orderCode: \"2343\",\n    supplierName: \"xxx\",\n    type_name: \"123\",\n    purchasing: \"内行\",\n    purchasingGroup: \"323\",\n    voucherDate: \"kkkk\",\n    approvalState_name: \"vvvv\",\n    confirmState_name: \"aaaa\",\n    closeState_name: \"vnnnnn\",\n    money:'1232.56',\n    d: \"操作\",\n    key: \"1\"\n  },\n  {\n    index: 2,\n    _checked: true,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    money:'2341232.56',\n    d: \"2操作\",\n    key: \"2\"\n  },\n  {\n    index: 3,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    _disabled: true,\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    money:'122368732.56',\n    d: \"3操作\",\n    key: \"3\"\n  },\n  {\n    index: 4,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    money:'18765232.56',\n    d: \"4操作\",\n    key: \"4\"\n  }\n];\n\nclass Demo1 extends Component {\n  constructor(props) {\n    super(props);\n  }\n  //临时加个判断\n  shouldComponentUpdate(){\n    if(this.props.className =='u-panel-title'){\n      return false;\n    }\n  }\n  getSelectedDataFunc = data => {\n    console.log(\"data\", data);\n  };\n\n  selectedRow = (record, index) => {};\n  /**\n   * 请求页面数据\n   */\n  freshata=()=>{\n\n  }\n  onDataNumSelect=()=>{\n    console.log('选择每页多少条的回调函数');\n  }\n  render() {\n    let paginationObj = {\n      items:10,//一页显示多少条\n      total:100,//总共多少条、\n      freshData:this.freshData,//点击下一页刷新的数据\n      onDataNumSelect:this.onDataNumSelect, //每页大小改变触发的事件\n      showJump:false\n    }\n    return (\n      <Grid\n        className=\"demo\"\n        columns={column}\n        data={dataList}\n        getSelectedDataFunc={this.getSelectedDataFunc}\n        paginationObj={paginationObj}\n        canSum={true}\n      />\n    );\n  }\n}\n", "desc": " 全选、分页、过滤功能、交换" }, { "example": _react2['default'].createElement(Demo2, null), "title": " 高级表格(排序)应用", "code": "/**\n *\n * @title 高级表格(排序)应用\n * @description 基础grid上添加排序功能\n *\n */\nimport React, { Component } from \"react\";\nimport { Grid } from 'tinper-bee';\nconst column = [\n    {\n      title: \"名字\",\n      dataIndex: \"a\",\n      key: \"a\",\n      className:'dfasd',\n      width: 200\n    },\n    {\n      title: \"功力指数名称长时显示省略号\",\n      dataIndex: \"b\",\n      key: \"b\",\n      width: 200,\n      sumCol: true,\n      fixed:'left',\n      sorter: (a, b) => a.c - b.c,\n      sorterClick:(data,type)=>{//排序的回调函数\n        //type value is up or down\n        console.log(\"data\",data);\n      }\n    },\n    {\n      title: \"年龄\",\n      dataIndex: \"c\",\n      key: \"c\",\n      width: 200,\n      sumCol: true,\n      sorter: (a, b) => a.c - b.c,\n      sorterClick:(data,type)=>{//排序的回调函数\n        //type value is up or down\n        console.log(\"data\",data);\n      }\n    },\n    {\n      title: \"成绩\",\n      dataIndex: \"e\",\n      key: \"e\",\n      width: 200,\n      sumCol: true,\n      sorter: (a, b) => a.c - b.c,\n    },\n    {\n      title: \"武功级别\",\n      dataIndex: \"d\",\n      key: \"d\",\n      width: 200\n    }\n  ];\n  const dataList = [\n    { a: \"杨过\", b: 675, c: 30, d: \"内行\",e:100, key: \"2\" },\n    { a: \"令狐冲\", b: 43, c: 41, d: \"大侠\",e:90, key: \"1\" },\n    { a: \"令狐冲1\", b: 43, c: 81, d: \"大侠\", e:120,key: \"4\" },\n    { a: \"令狐冲2\", b: 43, c: 81, d: \"大侠\", e:130,key: \"5\" },\n    { a: \"郭靖\", b: 153, c: 25, d: \"大侠\",e:90, key: \"3\" }\n  ];\n\nclass Demo2 extends Component {\n  constructor(props) {\n    super(props);\n  }\n\n  //临时加个判断\n  shouldComponentUpdate(){\n    if(this.props.className =='u-panel-title'){\n      return false;\n    }\n  }\n  getSelectedDataFunc = data => {\n    console.log(\"data\", data);\n  };\n\n  getCloumnsScroll = columns => {\n    let sum = 0;\n    columns.forEach(da => {\n      sum += da.width;\n    });\n    console.log(\"sum\", sum);\n    return sum;\n  };\n\n  selectedRow = (record, index) => {};\n  /**\n   * 请求页面数据\n   */\n  freshData=()=>{\n\n  }\n  /**\n   * 后端获取数据\n   */\n  sortFun = (sortParam)=>{\n    console.info(sortParam);\n    //将参数传递给后端排序\n  }\n  render() {\n    let paginationObj = {\n      items:10,//总页数\n      freshData:this.freshData\n    }\n    let sortObj = {\n        mode:'multiple',\n        // backSource:true,\n        sortFun:this.sortFun\n      }\n    \n    return (\n      <div>\n        \n         <Grid\n          className=\"demo\"\n          columns={column}\n          data={dataList}\n          getSelectedDataFunc={this.getSelectedDataFunc}\n          selectedRow={this.selectedRow}\n          sort={sortObj}\n          sortFun={this.sortFun}\n          paginationObj={paginationObj}\n        />\n      </div>\n     \n    );\n  }\n}\n", "desc": " 基础grid上添加排序功能" }, { "example": _react2['default'].createElement(Demo4, null), "title": " 高级表格的基础应用(基本示例3)", "code": "/**\n * @title 高级表格的基础应用(基本示例3)\n * @description 全选、分页、过滤。功能、交换\n *\n */\nimport React, { Component } from \"react\";\nimport { Grid } from 'tinper-bee';\nconst columns = [\n    {\n        title:'序号',\n        dataIndex:'index',\n        width:'80',\n        render:(text,record,index)=>{\n            return index\n        },\n        fixed:'left'\n    },\n    {\n    title: \"用户名\", dataIndex: \"a\", key: \"a\", width: 580, className: \"rowClassName\",\n  },\n  { id: \"123\", title: \"性别\", dataIndex: \"b\", key: \"b\", width: 80},\n  { title: \"年龄\", dataIndex: \"c\", key: \"c\", width: 200 },\n  {\n    title: \"操作\",\n    dataIndex: \"d\",\n    key: \"d\",\n    fixed:'right',\n    render(text, record, index) {\n      return (\n        <div style={{ position: 'relative' }} title={text} >\n          <a\n            href=\"javascript:;\"\n            tooltip={text}\n            onClick={() => {\n              alert('这是第' + index + '列，内容为:' + text);\n            }}\n          >\n            一些操作\n              </a>\n        </div>\n      );\n    }\n  }\n];\n\nconst data = [ ...new Array(10000) ].map((e, i) => {\n    const rs = { a: i + 'a', b: i + 'b', c: i + 'c', d: i + 'd', key: i };\n    if(i%3==0){\n        rs.b = '女';\n    }\n    return rs;\n   })\n\nclass Demo4 extends Component {\n  constructor(props) {\n    super(props);\n  }\n  //临时加个判断\n  shouldComponentUpdate(){\n    if(this.props.className =='u-panel-title'){\n      return false;\n    }\n  }\n  getSelectedDataFunc = data => {\n    console.log(\"data\", data);\n  };\n\n  selectedRow = (record, index) => {};\n  /**\n   * 请求页面数据\n   */\n  freshata=()=>{\n\n  }\n  onDataNumSelect=()=>{\n    console.log('选择每页多少条的回调函数');\n  }\n  render() {\n    let paginationObj = {\n      items:10,//一页显示多少条\n      total:100,//总共多少条\n      freshData:this.freshData,//点击下一页刷新的数据\n      onDataNumSelect:this.onDataNumSelect //每页大小改变触发的事件\n    }\n    return (\n      <Grid\n        className=\"demo\"\n        columns={columns}\n        data={data}\n        getSelectedDataFunc={this.getSelectedDataFunc}\n        paginationObj={paginationObj}\n        loadLazy={true}\n        heigth={40}\n        scroll = {{y:300}}\n      />\n    );\n  }\n}\n", "desc": " 全选、分页、过滤。功能、交换" }, { "example": _react2['default'].createElement(Demo5, null), "title": " 含有ToolBar的复杂表格", "code": "/**\n * @title 含有ToolBar的复杂表格\n * @description 用户可以自定表格的toolBar，其中的button 请参考bee-button中属性配置\n *\n */\nimport React, { Component } from \"react\";\nimport {  } from 'tinper-bee';\nimport  Grid,{GridToolBar} from \"../../src\";\n\n  \nconst column = [\n  {\n    title: \"序号\",\n    dataIndex: \"index\",\n    key: \"index\",\n    width: 100\n  },\n  {\n    title: \"订单编号\",\n    dataIndex: \"orderCode\",\n    key: \"orderCode\",\n    width: 150\n  },\n  {\n    title: \"类型\",\n    dataIndex: \"type_name\",\n    key: \"type_name\",\n    width: 100\n  },\n  {\n    title: \"采购组织\",\n    dataIndex: \"purchasing\",\n    key: \"purchasing\",\n    width: 150\n  },\n  {\n    title: \"采购组\",\n    dataIndex: \"purchasingGroup\",\n    key: \"purchasingGroup\",\n    width: 300\n  },\n  {\n    title: \"凭证日期\",\n    dataIndex: \"voucherDate\",\n    key: \"voucherDate\",\n    width: 150\n  },\n  {\n    title: \"审批状态\",\n    dataIndex: \"approvalState_name\",\n    key: \"approvalState_name\",\n    width: 150\n  },\n  {\n    title: \"确认状态\",\n    dataIndex: \"confirmState_name\",\n    key: \"confirmState_name\",\n    width: 500\n  },\n  {\n    title: \"关闭状态\",\n    dataIndex: \"closeState_name\",\n    key: \"closeState_name\",\n    width: 150\n  }\n];\n\n\nclass Demo1 extends Component {\n  constructor(props) {\n    super(props);\n    this.state = {\n        dataList: [\n            {\n              index: 1,\n              orderCode: \"2343\",\n              supplierName: \"xxx\",\n              type_name: \"123\",\n              purchasing: \"内行\",\n              purchasingGroup: \"323\",\n              voucherDate: \"kkkk\",\n              approvalState_name: \"vvvv\",\n              confirmState_name: \"aaaa\",\n              closeState_name: \"vnnnnn\",\n              money:'1232.56',\n              key: \"1\"\n            },\n            {\n              index: 2,\n              _checked: true,\n              orderCode: \"222\",\n              supplierName: \"22xxx\",\n              type_name: \"1223\",\n              purchasing: \"内行2\",\n              purchasingGroup: \"3223\",\n              voucherDate: \"222kk\",\n              approvalState_name: \"22vvvv\",\n              confirmState_name: \"2aaaa\",\n              closeState_name: \"2vnnnnn\",\n              money:'2341232.56',\n              key: \"2\"\n            },\n            {\n              index: 3,\n              orderCode: \"222\",\n              supplierName: \"22xxx\",\n              _disabled: true,\n              type_name: \"1223\",\n              purchasing: \"内行2\",\n              purchasingGroup: \"3223\",\n              voucherDate: \"222kk\",\n              approvalState_name: \"22vvvv\",\n              confirmState_name: \"2aaaa\",\n              closeState_name: \"2vnnnnn\",\n              money:'122368732.56',\n              key: \"3\"\n            },\n            {\n              index: 4,\n              orderCode: \"222\",\n              supplierName: \"22xxx\",\n              type_name: \"1223\",\n              purchasing: \"内行2\",\n              purchasingGroup: \"3223\",\n              voucherDate: \"222kk\",\n              approvalState_name: \"22vvvv\",\n              confirmState_name: \"2aaaa\",\n              closeState_name: \"2vnnnnn\",\n              money:'18765232.56',\n              key: \"4\"\n            }\n          ]\n    }\n  }\n  //临时加个判断\n//   shouldComponentUpdate(){\n    // if(this.props.className =='u-panel-title'){\n    //   return false;\n    // }\n//   }\n  getSelectedDataFunc = data => {\n    console.log(\"data\", data);\n  };\n\n  selectedRow = (record, index) => {};\n  /**\n   * 请求页面数据\n   */\n  freshata=()=>{\n\n  }\n  onDataNumSelect=()=>{\n    console.log('选择每页多少条的回调函数');\n  }\n  addData = ()=>{\n      const dataList = this.state.dataList;\n      const currentIndex  = dataList.length + 1;\n      dataList.push({\n        index: currentIndex,\n        key: `${currentIndex}`\n      });\n      this.setState({\n          dataList\n      })\n     \n  }\n  \n      console.log('export=======');\n  }\n  /**\n   *批量修改操作\n   */\n  dispatchUpdate = ()=>{\n    console.log('--dispatch---update')\n  }\n  /**\n   *批量删除\n   */\n  dispatchDel = ()=>{\n    console.log('--dispatch---del')\n  }\n  render() {\n    let paginationObj = {\n      items:10,//一页显示多少条\n      total:100,//总共多少条、\n      freshData:this.freshData,//点击下一页刷新的数据\n      onDataNumSelect:this.onDataNumSelect, //每页大小改变触发的事件\n      showJump:false\n    }\n\n    const toolBtns = [{\n            value:'新增',\n            onClick:this.addData,\n            bordered:false,\n            colors:'primary'\n        },{\n            value:'导出',\n            iconType:'uf-search',\n            onClick:this.\n            value:'上传',\n            iconType:'uf-cloud-up',\n        },{\n            value:'批量操作',\n            onClick:this.dispatchOpt,\n            children:[\n                {\n                    value:'修改',  \n                    onClick:this.dispatchUpdate\n                },{\n                    value:'删除',  \n                    onClick:this.dispatchDel\n                }\n            ]\n        },{\n            iconType:'uf-copy',\n        }]\n    return (\n      <div>\n        <GridToolBar toolBtns={toolBtns} btnSize='sm' />\n        <Grid\n          className=\"demo\"\n          columns={column}\n          data={this.state.dataList}\n          getSelectedDataFunc={this.getSelectedDataFunc}\n          paginationObj={paginationObj}\n          canSum={true}\n        />\n      </div>\n      \n    );\n  }\n}\n", "desc": " 用户可以自定表格的toolBar，其中的button 请参考bee-button中属性配置" }, { "example": _react2['default'].createElement(Demo6, null), "title": " 高级表格(保存操作模板、导出excel)", "code": "/**\n  * @title 高级表格(保存操作模板、导出excel)\n * @description 拖住表格宽度、交换列、以及导出excel功能\n *\n */\nimport React, { Component } from \"react\";\nimport { Button } from 'tinper-bee';\nimport Grid,{GridToolBar} from \"../../src\";\n\nconst column = [\n  {\n    title: \"序号\",\n    dataIndex: \"index\",\n    key: \"index\",\n    width: 100,\n    // exportHidden:true //是否在导出中隐藏此列,此属性如不设置的话，他会读取当前页面的列是否隐藏和显示\n  },\n  {\n    title: \"订单编号\",\n    dataIndex: \"orderCode\",\n    key: \"orderCode\",\n    exportKey:'supplierName',//单独设置当前列的导出的key\n    width: 130\n  },\n  {\n    title: \"供应商名称\",\n    dataIndex: \"supplierName\",\n    key: \"supplierName\",\n    width: 130\n  },\n  {\n    title: \"类型\",\n    dataIndex: \"type_name\",\n    key: \"type_name\",\n    width: 100\n  },\n  {\n    title: \"采购组织\",\n    dataIndex: \"purchasing\",\n    key: \"purchasing\",\n    width: 130,\n  },\n  {\n    title: \"采购组\",\n    dataIndex: \"purchasingGroup\",\n    key: \"purchasingGroup\",\n    width: 300\n  },\n  {\n    title: \"凭证日期\",\n    dataIndex: \"voucherDate\",\n    key: \"voucherDate\",\n    width: 130\n  },\n  {\n    title: \"审批状态\",\n    dataIndex: \"approvalState_name\",\n    key: \"approvalState_name\",\n    width: 130\n  },\n  {\n    title: \"确认状态\",\n    dataIndex: \"confirmState_name\",\n    key: \"confirmState_name\",\n    width: 500\n  },\n  {\n    title: \"关闭状态\",\n    dataIndex: \"closeState_name\",\n    key: \"closeState_name\",\n    width: 100\n  },\n  {\n    title: \"操作\",\n    dataIndex: \"d\",\n    key: \"d\",\n    width: 100,\n    fixed: \"right\",\n    render(text, record, index) {\n      return (\n        <div className=\"operation-btn\">\n          <a\n            href=\"#\"\n            tooltip={text}\n            onClick={() => {\n              alert(\"这是第\" + index + \"列，内容为:\" + text);\n            }}\n          >\n            一些操作\n          </a>\n        </div>\n      );\n    }\n  }\n];\nconst dataList = [\n  {\n    index: 1,\n    orderCode: \"2343\",\n    supplierName: \"xxx\",\n    type_name: \"123\",\n    purchasing: \"内行\",\n    purchasingGroup: \"323\",\n    voucherDate: \"kkkk\",\n    approvalState_name: \"vvvv\",\n    confirmState_name: \"aaaa\",\n    closeState_name: \"vnnnnn\",\n    d: \"操作\",\n    key: \"1\"\n  },\n  {\n    index: 2,\n    _checked: true,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    d: \"2操作\",\n    key: \"2\"\n  },\n  {\n    index: 3,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    _disabled: true,\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    d: \"3操作\",\n    key: \"3\"\n  },\n  {\n    index: 4,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    d: \"4操作\",\n    key: \"4\"\n  }\n];\n\nconst exportDataList = [\n  {\n    index: 1,\n    orderCode: \"2343\",\n    supplierName: \"xxx\",\n    type_name: \"123\",\n    purchasing: \"内行\",\n    purchasingGroup: \"323\",\n    voucherDate: \"kkkk\",\n    approvalState_name: \"vvvv\",\n    confirmState_name: \"aaaa\",\n    closeState_name: \"vnnnnn\",\n    d: \"操作\",\n    key: \"1\"\n  },\n  {\n    index: 4,\n    orderCode: \"222\",\n    supplierName: \"22xxx\",\n    type_name: \"1223\",\n    purchasing: \"内行2\",\n    purchasingGroup: \"3223\",\n    voucherDate: \"222kk\",\n    approvalState_name: \"22vvvv\",\n    confirmState_name: \"2aaaa\",\n    closeState_name: \"2vnnnnn\",\n    d: \"4操作\",\n    key: \"4\"\n  }\n];\n\n\nclass Demo3 extends Component {\n  constructor(props) {\n    super(props);\n    this.state={\n      showTemTable:false\n    }\n  }\n  \n  getSelectedDataFunc = data => {\n    console.log(\"data\", data);\n  };\n\n  getCloumnsScroll = columns => {\n    let sum = 0;\n    columns.forEach(da => {\n      sum += da.width;\n    });\n    console.log(\"sum\", sum);\n    return sum;\n  };\n\n  selectedRow = (record, index) => {};\n  /**\n   * 请求页面数据\n   */\n  freshData=()=>{\n\n  }\n  createTemTable=()=>{\n    const colsAndTablePros = this.refs.grid.getColumnsAndTablePros();\n    this.setState({\n      showTemTable:true,\n      tablePros:colsAndTablePros.tablePros,\n      temColumns:colsAndTablePros.columns\n    });\n  }\n\n  exportExcel = ()=>{\n    this.refs.grid.exportExcel();\n  }\n\n  render() {\n    let paginationObj = {\n      items:10,//总页数\n      total:100,\n      freshData:this.freshData\n    }\n    const toolBtns = [{\n        value:'生成模板表格',\n        onClick:this.createTemTable,\n        bordered:false,\n        colors:'primary'\n    },{\n        value:'导出',\n        iconType:'uf-search',\n        onClick:this.exportExcel\n    }]\n    return (\n      <div>\n        <GridToolBar toolBtns={toolBtns}  />\n        <Grid\n          ref=\"grid\"\n          className='gridDemo demo'\n          columns={column}\n          data={dataList}\n          exportData={exportDataList}\n          getSelectedDataFunc={this.getSelectedDataFunc}\n          dragborder\n          multiSelect={{ type: \"checkbox\" }}\n          scroll={{ x: \"130%\" }}\n          selectedRow={this.selectedRow}\n          paginationObj={paginationObj}\n        />\n        <h3>根据模板生成的表格</h3>\n        {this.state.showTemTable?\n          <Grid {...this.state.tablePros} columns={this.state.temColumns}/>\n          :\"\"}\n      </div>\n    );\n  }\n}\n", "desc": " 拖住表格宽度、交换列、以及导出excel功能" }];
 	
 	var Demo = function (_Component) {
 	    _inherits(Demo, _Component);
@@ -6125,8 +6125,6 @@
 	    value: true
 	});
 	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
 	var _react = __webpack_require__(1);
@@ -6144,6 +6142,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
 	var defaultDuration = 1.5;
+	var newDuration = void 0;
 	var defaultTop = 0;
 	var defaultBottom = 48;
 	var bottom = 90;
@@ -6231,6 +6230,25 @@
 	        callback(messageInstance);
 	        return;
 	    }
+	    switch (position) {
+	        case 'top':
+	            positionObj[position].notificationStyle.top = defaultTop;
+	            break;
+	        case 'bottom':
+	            positionObj[position].notificationStyle.bottom = defaultBottom;
+	            break;
+	        case 'bottomRight':
+	            positionObj[position].notificationStyle.bottom = bottom;
+	            break;
+	        case 'bottomLeft':
+	            positionObj[position].notificationStyle.bottom = bottom;
+	            break;
+	        default:
+	            break;
+	    }
+	    if (position !== 'top' && position !== 'bottom') {
+	        positionObj[position].messageStyle.width = width;
+	    }
 	    var style = positionObj[position].notificationStyle;
 	    var instanceObj = {
 	        clsPrefix: clsPrefix,
@@ -6266,7 +6284,6 @@
 	    }[type];
 	
 	    var positionStyle = positionObj[position].messageStyle;
-	
 	    getMessageInstance(position, function (instance) {
 	        instance.notice({
 	            key: key,
@@ -6302,8 +6319,12 @@
 	
 	exports["default"] = {
 	    create: function create(obj) {
+	        if (newDuration) {
+	            //如果在config方法里设置了duration
+	            obj.duration = newDuration;
+	        }
 	        var content = obj.content || '';
-	        var duration = _typeof(obj.duration) == undefined ? defaultDuration : obj.duration;
+	        var duration = typeof obj.duration == 'undefined' ? defaultDuration : obj.duration;
 	        var color = obj.color || 'dark';
 	        var onClose = obj.onClose || noop;
 	        var position = obj.position || "top";
@@ -6317,6 +6338,7 @@
 	        }
 	        if (options.duration !== undefined) {
 	            defaultDuration = options.duration;
+	            newDuration = defaultDuration;
 	        }
 	        if (options.clsPrefix !== undefined) {
 	            clsPrefix = options.clsPrefix;
@@ -6328,7 +6350,7 @@
 	            bottom = options.bottom;
 	        }
 	        if (options.width !== undefined) {
-	            bottom = options.width;
+	            width = options.width;
 	        }
 	    },
 	    destroy: function destroy() {
@@ -7550,20 +7572,28 @@
 /* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var deselectCurrent = __webpack_require__(80);
 	
-	var defaultMessage = 'Copy to clipboard: #{key}, Enter';
+	var defaultMessage = "Copy to clipboard: #{key}, Enter";
 	
 	function format(message) {
-	  var copyKey = (/mac os x/i.test(navigator.userAgent) ? '⌘' : 'Ctrl') + '+C';
+	  var copyKey = (/mac os x/i.test(navigator.userAgent) ? "⌘" : "Ctrl") + "+C";
 	  return message.replace(/#{\s*key\s*}/g, copyKey);
 	}
 	
 	function copy(text, options) {
-	  var debug, message, reselectPrevious, range, selection, mark, success = false;
-	  if (!options) { options = {}; }
+	  var debug,
+	    message,
+	    reselectPrevious,
+	    range,
+	    selection,
+	    mark,
+	    success = false;
+	  if (!options) {
+	    options = {};
+	  }
 	  debug = options.debug || false;
 	  try {
 	    reselectPrevious = deselectCurrent();
@@ -7571,47 +7601,50 @@
 	    range = document.createRange();
 	    selection = document.getSelection();
 	
-	    mark = document.createElement('span');
+	    mark = document.createElement("span");
 	    mark.textContent = text;
 	    // reset user styles for span element
-	    mark.style.all = 'unset';
+	    mark.style.all = "unset";
 	    // prevents scrolling to the end of the page
-	    mark.style.position = 'fixed';
+	    mark.style.position = "fixed";
 	    mark.style.top = 0;
-	    mark.style.clip = 'rect(0, 0, 0, 0)';
+	    mark.style.clip = "rect(0, 0, 0, 0)";
 	    // used to preserve spaces and line breaks
-	    mark.style.whiteSpace = 'pre';
+	    mark.style.whiteSpace = "pre";
 	    // do not inherit user-select (it may be `none`)
-	    mark.style.webkitUserSelect = 'text';
-	    mark.style.MozUserSelect = 'text';
-	    mark.style.msUserSelect = 'text';
-	    mark.style.userSelect = 'text';
+	    mark.style.webkitUserSelect = "text";
+	    mark.style.MozUserSelect = "text";
+	    mark.style.msUserSelect = "text";
+	    mark.style.userSelect = "text";
+	    mark.addEventListener("copy", function(e) {
+	      e.stopPropagation();
+	    });
 	
 	    document.body.appendChild(mark);
 	
-	    range.selectNode(mark);
+	    range.selectNodeContents(mark);
 	    selection.addRange(range);
 	
-	    var successful = document.execCommand('copy');
+	    var successful = document.execCommand("copy");
 	    if (!successful) {
-	      throw new Error('copy command was unsuccessful');
+	      throw new Error("copy command was unsuccessful");
 	    }
 	    success = true;
 	  } catch (err) {
-	    debug && console.error('unable to copy using execCommand: ', err);
-	    debug && console.warn('trying IE specific stuff');
+	    debug && console.error("unable to copy using execCommand: ", err);
+	    debug && console.warn("trying IE specific stuff");
 	    try {
-	      window.clipboardData.setData('text', text);
+	      window.clipboardData.setData("text", text);
 	      success = true;
 	    } catch (err) {
-	      debug && console.error('unable to copy using clipboardData: ', err);
-	      debug && console.error('falling back to prompt');
-	      message = format('message' in options ? options.message : defaultMessage);
+	      debug && console.error("unable to copy using clipboardData: ", err);
+	      debug && console.error("falling back to prompt");
+	      message = format("message" in options ? options.message : defaultMessage);
 	      window.prompt(message, text);
 	    }
 	  } finally {
 	    if (selection) {
-	      if (typeof selection.removeRange == 'function') {
+	      if (typeof selection.removeRange == "function") {
 	        selection.removeRange(range);
 	      } else {
 	        selection.removeAllRanges();
@@ -16405,7 +16438,7 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); } /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @title 高级表格的基础应用示例1
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @title 高级表格的基础应用(基本示例2)
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @description 全选、分页、过滤功能、交换
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
@@ -71017,7 +71050,7 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); } /**
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @title 高级表格(排序)应用示例2
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @title 高级表格(排序)应用
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @description 基础grid上添加排序功能
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
@@ -71168,6 +71201,401 @@
 	  value: true
 	});
 	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _src = __webpack_require__(158);
+	
+	var _src2 = _interopRequireDefault(_src);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /**
+	                                                                                                                                                                                                     * @title 高级表格的基础应用(基本示例3)
+	                                                                                                                                                                                                     * @description 全选、分页、过滤。功能、交换
+	                                                                                                                                                                                                     *
+	                                                                                                                                                                                                     */
+	
+	
+	var columns = [{
+	  title: '序号',
+	  dataIndex: 'index',
+	  width: '80',
+	  render: function render(text, record, index) {
+	    return index;
+	  },
+	  fixed: 'left'
+	}, {
+	  title: "用户名", dataIndex: "a", key: "a", width: 580, className: "rowClassName"
+	}, { id: "123", title: "性别", dataIndex: "b", key: "b", width: 80 }, { title: "年龄", dataIndex: "c", key: "c", width: 200 }, {
+	  title: "操作",
+	  dataIndex: "d",
+	  key: "d",
+	  fixed: 'right',
+	  render: function render(text, record, index) {
+	    return _react2["default"].createElement(
+	      "div",
+	      { style: { position: 'relative' }, title: text },
+	      _react2["default"].createElement(
+	        "a",
+	        {
+	          href: "javascript:;",
+	          tooltip: text,
+	          onClick: function onClick() {
+	            alert('这是第' + index + '列，内容为:' + text);
+	          }
+	        },
+	        "\u4E00\u4E9B\u64CD\u4F5C"
+	      )
+	    );
+	  }
+	}];
+	
+	var data = [].concat(_toConsumableArray(new Array(10000))).map(function (e, i) {
+	  var rs = { a: i + 'a', b: i + 'b', c: i + 'c', d: i + 'd', key: i };
+	  if (i % 3 == 0) {
+	    rs.b = '女';
+	  }
+	  return rs;
+	});
+	
+	var Demo4 = function (_Component) {
+	  _inherits(Demo4, _Component);
+	
+	  function Demo4(props) {
+	    _classCallCheck(this, Demo4);
+	
+	    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+	
+	    _this.getSelectedDataFunc = function (data) {
+	      console.log("data", data);
+	    };
+	
+	    _this.selectedRow = function (record, index) {};
+	
+	    _this.freshata = function () {};
+	
+	    _this.onDataNumSelect = function () {
+	      console.log('选择每页多少条的回调函数');
+	    };
+	
+	    return _this;
+	  }
+	  //临时加个判断
+	
+	
+	  Demo4.prototype.shouldComponentUpdate = function shouldComponentUpdate() {
+	    if (this.props.className == 'u-panel-title') {
+	      return false;
+	    }
+	  };
+	  /**
+	   * 请求页面数据
+	   */
+	
+	
+	  Demo4.prototype.render = function render() {
+	    var paginationObj = {
+	      items: 10, //一页显示多少条
+	      total: 100, //总共多少条
+	      freshData: this.freshData, //点击下一页刷新的数据
+	      onDataNumSelect: this.onDataNumSelect //每页大小改变触发的事件
+	    };
+	    return _react2["default"].createElement(_src2["default"], {
+	      className: "demo",
+	      columns: columns,
+	      data: data,
+	      getSelectedDataFunc: this.getSelectedDataFunc,
+	      paginationObj: paginationObj,
+	      loadLazy: true,
+	      heigth: 40,
+	      scroll: { y: 300 }
+	    });
+	  };
+	
+	  return Demo4;
+	}(_react.Component);
+	
+	exports["default"] = Demo4;
+	module.exports = exports["default"];
+
+/***/ }),
+/* 566 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _src = __webpack_require__(158);
+	
+	var _src2 = _interopRequireDefault(_src);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @title 含有ToolBar的复杂表格
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @description 用户可以自定表格的toolBar，其中的button 请参考bee-button中属性配置
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+	
+	
+	var column = [{
+	  title: "序号",
+	  dataIndex: "index",
+	  key: "index",
+	  width: 100
+	}, {
+	  title: "订单编号",
+	  dataIndex: "orderCode",
+	  key: "orderCode",
+	  width: 150
+	}, {
+	  title: "类型",
+	  dataIndex: "type_name",
+	  key: "type_name",
+	  width: 100
+	}, {
+	  title: "采购组织",
+	  dataIndex: "purchasing",
+	  key: "purchasing",
+	  width: 150
+	}, {
+	  title: "采购组",
+	  dataIndex: "purchasingGroup",
+	  key: "purchasingGroup",
+	  width: 300
+	}, {
+	  title: "凭证日期",
+	  dataIndex: "voucherDate",
+	  key: "voucherDate",
+	  width: 150
+	}, {
+	  title: "审批状态",
+	  dataIndex: "approvalState_name",
+	  key: "approvalState_name",
+	  width: 150
+	}, {
+	  title: "确认状态",
+	  dataIndex: "confirmState_name",
+	  key: "confirmState_name",
+	  width: 500
+	}, {
+	  title: "关闭状态",
+	  dataIndex: "closeState_name",
+	  key: "closeState_name",
+	  width: 150
+	}];
+	
+	var Demo1 = function (_Component) {
+	  _inherits(Demo1, _Component);
+	
+	  function Demo1(props) {
+	    _classCallCheck(this, Demo1);
+	
+	    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
+	
+	    _this.getSelectedDataFunc = function (data) {
+	      console.log("data", data);
+	    };
+	
+	    _this.selectedRow = function (record, index) {};
+	
+	    _this.freshata = function () {};
+	
+	    _this.onDataNumSelect = function () {
+	      console.log('选择每页多少条的回调函数');
+	    };
+	
+	    _this.addData = function () {
+	      var dataList = _this.state.dataList;
+	      var currentIndex = dataList.length + 1;
+	      dataList.push({
+	        index: currentIndex,
+	        key: "" + currentIndex
+	      });
+	      _this.setState({
+	        dataList: dataList
+	      });
+	    };
+	
+	    _this["export"] = function () {
+	      console.log('export=======');
+	    };
+	
+	    _this.dispatchUpdate = function () {
+	      console.log('--dispatch---update');
+	    };
+	
+	    _this.dispatchDel = function () {
+	      console.log('--dispatch---del');
+	    };
+	
+	    _this.state = {
+	      dataList: [{
+	        index: 1,
+	        orderCode: "2343",
+	        supplierName: "xxx",
+	        type_name: "123",
+	        purchasing: "内行",
+	        purchasingGroup: "323",
+	        voucherDate: "kkkk",
+	        approvalState_name: "vvvv",
+	        confirmState_name: "aaaa",
+	        closeState_name: "vnnnnn",
+	        money: '1232.56',
+	        key: "1"
+	      }, {
+	        index: 2,
+	        _checked: true,
+	        orderCode: "222",
+	        supplierName: "22xxx",
+	        type_name: "1223",
+	        purchasing: "内行2",
+	        purchasingGroup: "3223",
+	        voucherDate: "222kk",
+	        approvalState_name: "22vvvv",
+	        confirmState_name: "2aaaa",
+	        closeState_name: "2vnnnnn",
+	        money: '2341232.56',
+	        key: "2"
+	      }, {
+	        index: 3,
+	        orderCode: "222",
+	        supplierName: "22xxx",
+	        _disabled: true,
+	        type_name: "1223",
+	        purchasing: "内行2",
+	        purchasingGroup: "3223",
+	        voucherDate: "222kk",
+	        approvalState_name: "22vvvv",
+	        confirmState_name: "2aaaa",
+	        closeState_name: "2vnnnnn",
+	        money: '122368732.56',
+	        key: "3"
+	      }, {
+	        index: 4,
+	        orderCode: "222",
+	        supplierName: "22xxx",
+	        type_name: "1223",
+	        purchasing: "内行2",
+	        purchasingGroup: "3223",
+	        voucherDate: "222kk",
+	        approvalState_name: "22vvvv",
+	        confirmState_name: "2aaaa",
+	        closeState_name: "2vnnnnn",
+	        money: '18765232.56',
+	        key: "4"
+	      }]
+	    };
+	    return _this;
+	  }
+	  //临时加个判断
+	  //   shouldComponentUpdate(){
+	  // if(this.props.className =='u-panel-title'){
+	  //   return false;
+	  // }
+	  //   }
+	
+	  /**
+	   * 请求页面数据
+	   */
+	
+	  /**
+	   *批量修改操作
+	   */
+	
+	  /**
+	   *批量删除
+	   */
+	
+	
+	  Demo1.prototype.render = function render() {
+	    var paginationObj = {
+	      items: 10, //一页显示多少条
+	      total: 100, //总共多少条、
+	      freshData: this.freshData, //点击下一页刷新的数据
+	      onDataNumSelect: this.onDataNumSelect, //每页大小改变触发的事件
+	      showJump: false
+	    };
+	
+	    var toolBtns = [{
+	      value: '新增',
+	      onClick: this.addData,
+	      bordered: false,
+	      colors: 'primary'
+	    }, {
+	      value: '导出',
+	      iconType: 'uf-search',
+	      onClick: this["export"]
+	    }, {
+	      value: '上传',
+	      iconType: 'uf-cloud-up'
+	    }, {
+	      value: '批量操作',
+	      onClick: this.dispatchOpt,
+	      children: [{
+	        value: '修改',
+	        onClick: this.dispatchUpdate
+	      }, {
+	        value: '删除',
+	        onClick: this.dispatchDel
+	      }]
+	    }, {
+	      iconType: 'uf-copy'
+	    }];
+	    return _react2["default"].createElement(
+	      "div",
+	      null,
+	      _react2["default"].createElement(_src.GridToolBar, { toolBtns: toolBtns, btnSize: "sm" }),
+	      _react2["default"].createElement(_src2["default"], {
+	        className: "demo",
+	        columns: column,
+	        data: this.state.dataList,
+	        getSelectedDataFunc: this.getSelectedDataFunc,
+	        paginationObj: paginationObj,
+	        canSum: true
+	      })
+	    );
+	  };
+	
+	  return Demo1;
+	}(_react.Component);
+	
+	exports["default"] = Demo1;
+	module.exports = exports["default"];
+
+/***/ }),
+/* 567 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 	
 	var _react = __webpack_require__(1);
@@ -71191,7 +71619,7 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); } /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * @title 高级表格(保存操作模板、导出excel)应用示例3
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 * @title 高级表格(保存操作模板、导出excel)
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @description 拖住表格宽度、交换列、以及导出excel功能
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
 	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
@@ -71451,401 +71879,6 @@
 	}(_react.Component);
 	
 	exports["default"] = Demo3;
-	module.exports = exports["default"];
-
-/***/ }),
-/* 566 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _src = __webpack_require__(158);
-	
-	var _src2 = _interopRequireDefault(_src);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /**
-	                                                                                                                                                                                                     * @title 高级表格的基础应用示例4
-	                                                                                                                                                                                                     * @description 全选、分页、过滤功能、交换
-	                                                                                                                                                                                                     *
-	                                                                                                                                                                                                     */
-	
-	
-	var columns = [{
-	  title: '序号',
-	  dataIndex: 'index',
-	  width: '80',
-	  render: function render(text, record, index) {
-	    return index;
-	  },
-	  fixed: 'left'
-	}, {
-	  title: "用户名", dataIndex: "a", key: "a", width: 580, className: "rowClassName"
-	}, { id: "123", title: "性别", dataIndex: "b", key: "b", width: 80 }, { title: "年龄", dataIndex: "c", key: "c", width: 200 }, {
-	  title: "操作",
-	  dataIndex: "d",
-	  key: "d",
-	  fixed: 'right',
-	  render: function render(text, record, index) {
-	    return _react2["default"].createElement(
-	      "div",
-	      { style: { position: 'relative' }, title: text },
-	      _react2["default"].createElement(
-	        "a",
-	        {
-	          href: "javascript:;",
-	          tooltip: text,
-	          onClick: function onClick() {
-	            alert('这是第' + index + '列，内容为:' + text);
-	          }
-	        },
-	        "\u4E00\u4E9B\u64CD\u4F5C"
-	      )
-	    );
-	  }
-	}];
-	
-	var data = [].concat(_toConsumableArray(new Array(10000))).map(function (e, i) {
-	  var rs = { a: i + 'a', b: i + 'b', c: i + 'c', d: i + 'd', key: i };
-	  if (i % 3 == 0) {
-	    rs.b = '女';
-	  }
-	  return rs;
-	});
-	
-	var Demo4 = function (_Component) {
-	  _inherits(Demo4, _Component);
-	
-	  function Demo4(props) {
-	    _classCallCheck(this, Demo4);
-	
-	    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
-	
-	    _this.getSelectedDataFunc = function (data) {
-	      console.log("data", data);
-	    };
-	
-	    _this.selectedRow = function (record, index) {};
-	
-	    _this.freshata = function () {};
-	
-	    _this.onDataNumSelect = function () {
-	      console.log('选择每页多少条的回调函数');
-	    };
-	
-	    return _this;
-	  }
-	  //临时加个判断
-	
-	
-	  Demo4.prototype.shouldComponentUpdate = function shouldComponentUpdate() {
-	    if (this.props.className == 'u-panel-title') {
-	      return false;
-	    }
-	  };
-	  /**
-	   * 请求页面数据
-	   */
-	
-	
-	  Demo4.prototype.render = function render() {
-	    var paginationObj = {
-	      items: 10, //一页显示多少条
-	      total: 100, //总共多少条
-	      freshData: this.freshData, //点击下一页刷新的数据
-	      onDataNumSelect: this.onDataNumSelect //每页大小改变触发的事件
-	    };
-	    return _react2["default"].createElement(_src2["default"], {
-	      className: "demo",
-	      columns: columns,
-	      data: data,
-	      getSelectedDataFunc: this.getSelectedDataFunc,
-	      paginationObj: paginationObj,
-	      loadLazy: true,
-	      heigth: 40,
-	      scroll: { y: 300 }
-	    });
-	  };
-	
-	  return Demo4;
-	}(_react.Component);
-	
-	exports["default"] = Demo4;
-	module.exports = exports["default"];
-
-/***/ }),
-/* 567 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _src = __webpack_require__(158);
-	
-	var _src2 = _interopRequireDefault(_src);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-	
-	function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); } /**
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @title 含有ToolBar的复杂表格
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * @description 用户可以自定表格的toolBar，其中的button 请参考bee-button中属性配置
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                *
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
-	
-	
-	var column = [{
-	  title: "序号",
-	  dataIndex: "index",
-	  key: "index",
-	  width: 100
-	}, {
-	  title: "订单编号",
-	  dataIndex: "orderCode",
-	  key: "orderCode",
-	  width: 150
-	}, {
-	  title: "类型",
-	  dataIndex: "type_name",
-	  key: "type_name",
-	  width: 100
-	}, {
-	  title: "采购组织",
-	  dataIndex: "purchasing",
-	  key: "purchasing",
-	  width: 150
-	}, {
-	  title: "采购组",
-	  dataIndex: "purchasingGroup",
-	  key: "purchasingGroup",
-	  width: 300
-	}, {
-	  title: "凭证日期",
-	  dataIndex: "voucherDate",
-	  key: "voucherDate",
-	  width: 150
-	}, {
-	  title: "审批状态",
-	  dataIndex: "approvalState_name",
-	  key: "approvalState_name",
-	  width: 150
-	}, {
-	  title: "确认状态",
-	  dataIndex: "confirmState_name",
-	  key: "confirmState_name",
-	  width: 500
-	}, {
-	  title: "关闭状态",
-	  dataIndex: "closeState_name",
-	  key: "closeState_name",
-	  width: 150
-	}];
-	
-	var Demo1 = function (_Component) {
-	  _inherits(Demo1, _Component);
-	
-	  function Demo1(props) {
-	    _classCallCheck(this, Demo1);
-	
-	    var _this = _possibleConstructorReturn(this, _Component.call(this, props));
-	
-	    _this.getSelectedDataFunc = function (data) {
-	      console.log("data", data);
-	    };
-	
-	    _this.selectedRow = function (record, index) {};
-	
-	    _this.freshata = function () {};
-	
-	    _this.onDataNumSelect = function () {
-	      console.log('选择每页多少条的回调函数');
-	    };
-	
-	    _this.addData = function () {
-	      var dataList = _this.state.dataList;
-	      var currentIndex = dataList.length + 1;
-	      dataList.push({
-	        index: currentIndex,
-	        key: "" + currentIndex
-	      });
-	      _this.setState({
-	        dataList: dataList
-	      });
-	    };
-	
-	    _this["export"] = function () {
-	      console.log('export=======');
-	    };
-	
-	    _this.dispatchUpdate = function () {
-	      console.log('--dispatch---update');
-	    };
-	
-	    _this.dispatchDel = function () {
-	      console.log('--dispatch---del');
-	    };
-	
-	    _this.state = {
-	      dataList: [{
-	        index: 1,
-	        orderCode: "2343",
-	        supplierName: "xxx",
-	        type_name: "123",
-	        purchasing: "内行",
-	        purchasingGroup: "323",
-	        voucherDate: "kkkk",
-	        approvalState_name: "vvvv",
-	        confirmState_name: "aaaa",
-	        closeState_name: "vnnnnn",
-	        money: '1232.56',
-	        key: "1"
-	      }, {
-	        index: 2,
-	        _checked: true,
-	        orderCode: "222",
-	        supplierName: "22xxx",
-	        type_name: "1223",
-	        purchasing: "内行2",
-	        purchasingGroup: "3223",
-	        voucherDate: "222kk",
-	        approvalState_name: "22vvvv",
-	        confirmState_name: "2aaaa",
-	        closeState_name: "2vnnnnn",
-	        money: '2341232.56',
-	        key: "2"
-	      }, {
-	        index: 3,
-	        orderCode: "222",
-	        supplierName: "22xxx",
-	        _disabled: true,
-	        type_name: "1223",
-	        purchasing: "内行2",
-	        purchasingGroup: "3223",
-	        voucherDate: "222kk",
-	        approvalState_name: "22vvvv",
-	        confirmState_name: "2aaaa",
-	        closeState_name: "2vnnnnn",
-	        money: '122368732.56',
-	        key: "3"
-	      }, {
-	        index: 4,
-	        orderCode: "222",
-	        supplierName: "22xxx",
-	        type_name: "1223",
-	        purchasing: "内行2",
-	        purchasingGroup: "3223",
-	        voucherDate: "222kk",
-	        approvalState_name: "22vvvv",
-	        confirmState_name: "2aaaa",
-	        closeState_name: "2vnnnnn",
-	        money: '18765232.56',
-	        key: "4"
-	      }]
-	    };
-	    return _this;
-	  }
-	  //临时加个判断
-	  //   shouldComponentUpdate(){
-	  // if(this.props.className =='u-panel-title'){
-	  //   return false;
-	  // }
-	  //   }
-	
-	  /**
-	   * 请求页面数据
-	   */
-	
-	  /**
-	   *批量修改操作
-	   */
-	
-	  /**
-	   *批量删除
-	   */
-	
-	
-	  Demo1.prototype.render = function render() {
-	    var paginationObj = {
-	      items: 10, //一页显示多少条
-	      total: 100, //总共多少条、
-	      freshData: this.freshData, //点击下一页刷新的数据
-	      onDataNumSelect: this.onDataNumSelect, //每页大小改变触发的事件
-	      showJump: false
-	    };
-	
-	    var toolBtns = [{
-	      value: '新增',
-	      onClick: this.addData,
-	      bordered: false,
-	      colors: 'primary'
-	    }, {
-	      value: '导出',
-	      iconType: 'uf-search',
-	      onClick: this["export"]
-	    }, {
-	      value: '上传',
-	      iconType: 'uf-cloud-up'
-	    }, {
-	      value: '批量操作',
-	      onClick: this.dispatchOpt,
-	      children: [{
-	        value: '修改',
-	        onClick: this.dispatchUpdate
-	      }, {
-	        value: '删除',
-	        onClick: this.dispatchDel
-	      }]
-	    }, {
-	      iconType: 'uf-copy'
-	    }];
-	    return _react2["default"].createElement(
-	      "div",
-	      null,
-	      _react2["default"].createElement(_src.GridToolBar, { toolBtns: toolBtns, btnSize: "sm" }),
-	      _react2["default"].createElement(_src2["default"], {
-	        className: "demo",
-	        columns: column,
-	        data: this.state.dataList,
-	        getSelectedDataFunc: this.getSelectedDataFunc,
-	        paginationObj: paginationObj,
-	        canSum: true
-	      })
-	    );
-	  };
-	
-	  return Demo1;
-	}(_react.Component);
-	
-	exports["default"] = Demo1;
 	module.exports = exports["default"];
 
 /***/ })
