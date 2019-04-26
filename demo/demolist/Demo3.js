@@ -1,5 +1,5 @@
 /**
-  * @title 高级表格(保存操作模板、导出excel)应用 
+  * @title 高级表格(保存操作模板、导出excel)应用示例3
  * @description 拖住表格宽度、交换列、以及导出excel功能
  *
  */
