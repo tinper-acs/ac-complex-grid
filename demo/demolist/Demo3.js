@@ -20,13 +20,13 @@ const column = [
     dataIndex: "orderCode",
     key: "orderCode",
     exportKey:'supplierName',//单独设置当前列的导出的key
-    width: 100
+    width: 130
   },
   {
     title: "供应商名称",
     dataIndex: "supplierName",
     key: "supplierName",
-    width: 100
+    width: 130
   },
   {
     title: "类型",
@@ -38,7 +38,7 @@ const column = [
     title: "采购组织",
     dataIndex: "purchasing",
     key: "purchasing",
-    width: 100,
+    width: 130,
   },
   {
     title: "采购组",
@@ -50,13 +50,13 @@ const column = [
     title: "凭证日期",
     dataIndex: "voucherDate",
     key: "voucherDate",
-    width: 100
+    width: 130
   },
   {
     title: "审批状态",
     dataIndex: "approvalState_name",
     key: "approvalState_name",
-    width: 100
+    width: 130
   },
   {
     title: "确认状态",
@@ -246,14 +246,11 @@ class Demo3 extends Component {
           data={dataList}
           exportData={exportDataList}
           getSelectedDataFunc={this.getSelectedDataFunc}
-          checkMinSize={7}
-          // draggable={true}
           dragborder
           multiSelect={{ type: "checkbox" }}
-          scroll={{ x: "130%", y: 100 }}
+          scroll={{ x: "130%" }}
           selectedRow={this.selectedRow}
           paginationObj={paginationObj}
-          showFilterPopover={true}
         />
         <h3>根据模板生成的表格</h3>
         {this.state.showTemTable?
